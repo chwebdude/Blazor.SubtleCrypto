@@ -61,6 +61,16 @@ namespace Blazor.SubtleCrypto
             return result;
         }
 
+        public async Task<CryptoResult> EncryptByKeyAsync(string text, string key)
+        {
+            if (string.IsNullOrEmpty(text))
+                return null;
+
+            var taskItem = CreateItem(0, text, true, key);
+            var result = await SubtleEncrypt(new List<CryptoResult> { taskItem });
+            return result.Any() ? result[0] : null;
+        }
+
         #endregion
         #region DECRYPT
         public async Task<string> DecryptAsync(string text)
@@ -135,6 +145,19 @@ namespace Blazor.SubtleCrypto
             var result = await Task.WhenAll(taskList);
             return result.ToList();
         }
+
+        public async Task<string> DecryptByKeyAsync(string text, string key)
+        {
+            if (string.IsNullOrEmpty(text))
+                return null;
+
+
+            var taskItem = CreateItem(0, text, false, key);
+            var result = await SubtleDecrypt(new List<CryptoResult> { taskItem });
+            return result.Any() ? result[0] : null;
+
+        }
+
         #endregion
         #region PRIVATE METHODS
         /// <summary>
@@ -260,6 +283,13 @@ namespace Blazor.SubtleCrypto
         /// <returns>A list of object with ciphertext, origin and secret data.</returns>
         public Task<List<CryptoResult>> EncryptListAsync<T>(List<T> list);
         /// <summary>
+        /// Converts plaintext to a ciphertextby a given text and key
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="key"></param>
+        /// <returns>An object with ciphertext, origin and secret data.</returns>
+        public Task<CryptoResult> EncryptByKeyAsync(string text, string key);
+        /// <summary>
         /// Converts a ciphertext to plaintext. Note: require key in program.cs
         /// </summary>
         /// <param name="text"></param>
@@ -307,5 +337,13 @@ namespace Blazor.SubtleCrypto
         /// <param name="text"></param>
         /// <returns>A list of decoded object.</returns>
         public Task<List<T>> DecryptListAsync<T>(List<CryptoInput> list);
+
+        /// <summary>
+        /// Converts a ciphertext to plaintext by an key
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="key"></param>
+        /// <returns>A decoded plaintext.</returns>
+        public Task<string> DecryptByKeyAsync(string text, string key);
     }
 }
