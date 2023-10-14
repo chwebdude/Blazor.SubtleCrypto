@@ -26,7 +26,7 @@ Because it uses JSInterop, this library can run on Blazor WebAssembly (client-si
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
-    <PackageReference Include="Microsoft.JSInterop" Version="7.0.9" />
+    <PackageReference Include="Microsoft.JSInterop" Version="7.0.12" />
   </ItemGroup>
 
 </Project>
